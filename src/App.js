@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, NavLink } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
 
 const Home = () => {
   return <div>Home</div>
@@ -16,18 +19,25 @@ const OhNo = () => {
 class App extends Component {
   render() {
     return (
-      <div>
+      <Container fluid="true">
         <BrowserRouter>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/away">Away</NavLink>
-          <NavLink to="/garbage">Garbage</NavLink>
+          <Navbar expand="lg">
+            <Navbar.Collapse>
+              <Nav className="mr-auto">
+                <NavLink exact to="/" className="nav-link">Home</NavLink>
+                <NavLink to="/away" className="nav-link">Away</NavLink>
+                <NavLink to="/garbage" className="nav-link">Garbage</NavLink>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/away" component={Away} />
             <Route component={OhNo} />
           </Switch>
         </BrowserRouter>
-      </div>
+      </Container>
     );
   }
 }
