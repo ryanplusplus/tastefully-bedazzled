@@ -16,20 +16,26 @@ const OhNo = () => {
   return <div>Oh derp</div>
 };
 
+const Header = () => {
+  return (
+    <Navbar expand="lg">
+      <Navbar.Collapse>
+        <Nav className="mr-auto">
+          <NavLink exact to="/" className="nav-link">Home</NavLink>
+          <NavLink to="/away" className="nav-link">Away</NavLink>
+          <NavLink to="/garbage" className="nav-link">Garbage</NavLink>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+};
+
 class App extends Component {
   render() {
     return (
       <Container fluid="true">
         <BrowserRouter>
-          <Navbar expand="lg">
-            <Navbar.Collapse>
-              <Nav className="mr-auto">
-                <NavLink exact to="/" className="nav-link">Home</NavLink>
-                <NavLink to="/away" className="nav-link">Away</NavLink>
-                <NavLink to="/garbage" className="nav-link">Garbage</NavLink>
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
+          <Header />
 
           <Switch>
             <Route exact path="/" component={Home} />
