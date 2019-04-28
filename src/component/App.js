@@ -1,51 +1,49 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, NavLink } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Route, Switch } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+import Model from '../notes/Model';
+import Api from '../notes/Api';
+import CreateNote from './CreateNote';
+import Settings from './Settings';
+import FourOhFour from './FourOhFour';
+import Header from './Header';
+import NoteGrid from './NotePreviewGrid';
+import Note from './Note';
 
-const Home = () => {
-  return <div>Home</div>
-};
+export default class extends Component {
+  constructor(props) {
+    super(props);
 
-const Away = () => {
-  return <div>Away</div>
-};
+    this.state = { loaded: false };
 
-const OhNo = () => {
-  return <div>Oh derp</div>
-};
+    Model(Api()).then((model) => {
+      this.model = model;
+      this.setState({
+        loaded: true
+      });
+    });
+  };
 
-const Header = () => {
-  return (
-    <Navbar expand="lg">
-      <Navbar.Collapse>
-        <Nav className="mr-auto">
-          <NavLink exact to="/" className="nav-link">Home</NavLink>
-          <NavLink to="/away" className="nav-link">Away</NavLink>
-          <NavLink to="/garbage" className="nav-link">Garbage</NavLink>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  );
-};
+  createNote = async ({ title, body }) => {
+    await this.model.createNote({ title, body });
+    this.props.history.push('/');
+  };
 
-class App extends Component {
-  render() {
+  render = () => {
     return (
-      <Container fluid="true">
-        <BrowserRouter>
-          <Header />
+      this.state.loaded && <Container fluid="true">
+        <Header />
 
+        <Container fluid="true">
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/away" component={Away} />
-            <Route component={OhNo} />
+            <Route exact path="/" component={() => <NoteGrid model={this.model} />} />
+            <Route path="/new" component={() => <CreateNote model={this.model} onSubmit={this.createNote} />} />
+            <Route path="/settings" component={() => <Settings model={this.model} />} />
+            <Route path="/note/:id" component={() => <Note model={this.model} />} />
+            <Route component={FourOhFour} />
           </Switch>
-        </BrowserRouter>
+        </Container>
       </Container>
     );
-  }
+  };
 }
-
-export default App;

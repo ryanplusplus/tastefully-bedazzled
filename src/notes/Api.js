@@ -2,9 +2,9 @@ const axios = require('axios');
 
 const ROOT = 'https://api.myjson.com';
 
-module.exports = () => ({
+export default () => ({
   read: async (id) =>
-    await axios.get(`${ROOT}/bins/${id}`).data,
+    (await axios.get(`${ROOT}/bins/${id}`)).data,
 
   write: async (id, content) =>
     await axios.put(`${ROOT}/bins/${id}`, content),

@@ -1,15 +1,18 @@
 export default async (api, key) => {
-  if(key === undefined) {
-    key = await api.create({ notes: [] });
-  }
-
   const o = {
     key
   };
 
-  const readManifest = () => api.read(key);
+  // fixme kill this
+  o.key = '1fltro';
 
-  const writeManifest = (contents) => api.write(key, contents);
+  if(o.key === undefined) {
+    o.key = await api.create({ notes: [] });
+  }
+
+  const readManifest = () => api.read(o.key);
+
+  const writeManifest = (contents) => api.write(o.key, contents);
 
   o.listNotes = async () => (await readManifest()).notes;
 
@@ -30,6 +33,8 @@ export default async (api, key) => {
     manifest.notes = manifest.notes.filter((x) => x !== id);
     return await writeManifest(manifest);
   };
+
+  o.setKey = (key) => o.key = key;
 
   return o;
 };

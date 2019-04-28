@@ -70,3 +70,16 @@ it('should use a provided key to get an existing manifest', async () => {
 
   expect(await model.listNotes()).toEqual([ note ]);
 });
+
+it('should let the key be updated after initialization', async () => {
+  const api = Api();
+  let model = await Model(api);
+  const key = model.key;
+
+  const note = await model.createNote({ title: 'title', contents: 'contents' });
+
+  model = await Model(api);
+  model.setKey(key);
+
+  expect(await model.listNotes()).toEqual([note]);
+});
