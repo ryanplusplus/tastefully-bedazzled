@@ -18,19 +18,20 @@ export default class extends Component {
 
     Model(Api()).then(async (model) => {
       this.model = model;
-      this.updateState();
+      this.updateState({ loaded: true });
     });
   };
 
-  updateState = async () => {
+  updateState = async (overrides = {}) => {
     const ids = await this.model.listNotes();
     const notes = await Promise.all(ids.map(async (id) => {
       return { id, data: await this.model.readNote(id) };
     }));
-    this.setState({
-      loaded: true,
-      notes
-    });
+    this.setState(Object.assign({
+      key: this.model.key,
+      notes,
+      keyError: false
+    }, overrides));
   };
 
   createNote = async ({ title, body }) => {
@@ -45,8 +46,15 @@ export default class extends Component {
   };
 
   updateKey = async (key) => {
-    await this.model.updateKey(key);
-    this.updateState();
+    if(await this.model.validKey(key)) {
+      await this.model.setKey(key);
+      await this.updateState();
+    }
+    else {
+      this.setState({
+        keyError: true
+      });
+    }
   };
 
   render = () => {
@@ -58,7 +66,7 @@ export default class extends Component {
           <Switch>
             <Route exact path="/" component={() => <NotePreviewGrid model={this.model} notes={this.state.notes} onDelete={this.deleteNote} />} />
             <Route path="/new" component={() => <CreateNote onSave={this.createNote} />} />
-            <Route path="/settings" component={() => <Settings key={this.model.key} onKeyUpdate={this.updateKey} />} />
+            <Route path="/settings" component={() => <Settings currentKey={this.state.key} keyError={this.state.keyError} onKeyUpdate={this.updateKey} />} />
             <Route path="/note/:id" component={() => <Note model={this.model} />} />
             <Route component={FourOhFour} />
           </Switch>

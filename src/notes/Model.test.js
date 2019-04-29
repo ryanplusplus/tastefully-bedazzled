@@ -83,3 +83,11 @@ it('should let the key be updated after initialization', async () => {
 
   expect(await model.listNotes()).toEqual([note]);
 });
+
+it('should allow the validity of a key to be checked', async () => {
+  let model = await Model(Api());
+  const key = model.key;
+
+  expect(await model.validKey(key)).toBe(true);
+  expect(await model.validKey(key + 1)).toBe(false);
+});

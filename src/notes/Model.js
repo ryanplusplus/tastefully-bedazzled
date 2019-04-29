@@ -4,10 +4,13 @@ export default async (api, key) => {
   };
 
   // fixme kill this
-  o.key = '1fltro';
+  o.key = 'vowcs';
 
   if(o.key === undefined) {
-    o.key = await api.create({ notes: [] });
+    o.key = await api.create({
+      tastefullyBedazzled: true,
+      notes: []
+    });
   }
 
   const readManifest = () => api.read(o.key);
@@ -35,6 +38,12 @@ export default async (api, key) => {
   };
 
   o.setKey = (key) => o.key = key;
+
+  o.validKey = async (key) => {
+    return api.read(key)
+      .then((manifest) => manifest.tastefullyBedazzled === true)
+      .catch(() => false);
+  };
 
   return o;
 };

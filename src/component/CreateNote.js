@@ -17,11 +17,14 @@ export default (props) => {
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
           <Form.Control required type="text" ref={(_title) => title = _title} />
+          <Form.Control.Feedback type="invalid">
+            Please specify a title
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group controlId="body">
           <Form.Label>Body</Form.Label>
-          <Form.Control required as="textarea" rows="7" ref={(_body) => body = _body} />
+          <Form.Control as="textarea" rows="7" ref={(_body) => body = _body} />
         </Form.Group>
 
         <Button className="float-right" variant="light" type="submit">
