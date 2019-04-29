@@ -1,30 +1,33 @@
-import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
+import React from 'react';
+import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
-export default class extends Component {
-  onSubmit = async (e) => {
+export default (props) => {
+  let body, title;
+
+  const onSave = async (e) => {
     e.preventDefault();
-    this.props.onSubmit({ title: this.title.value, body: this.body.value });
+    props.onSave({ title: title.value, body: body.value });
   };
 
-  render = () => {
-    return (
-      <Form onSubmit={this.onSubmit} >
+  return (
+    <Col xs={12} md={6} lg={4}>
+      <Form onSubmit={onSave} >
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
-          <Form.Control type="text" ref={(title) => this.title = title} />
+          <Form.Control required type="text" ref={(_title) => title = _title} />
         </Form.Group>
 
         <Form.Group controlId="body">
           <Form.Label>Body</Form.Label>
-          <Form.Control type="text" ref={(body) => this.body = body} />
+          <Form.Control required as="textarea" rows="7" ref={(_body) => body = _body} />
         </Form.Group>
 
-        <Button variant="light" type="submit">
+        <Button className="float-right" variant="light" type="submit">
           Save
         </Button>
       </Form>
-    )
-  };
+    </Col>
+  );
 };

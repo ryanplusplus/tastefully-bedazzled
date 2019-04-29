@@ -1,33 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-export default class extends Component {
-  state = {
-    title: '',
-    body: '',
-    loaded: false
-  };
-
-  componentDidMount = async () => {
-    const note = await this.props.model.readNote(this.props.id);
-
-    this.setState({
-      title: note.title,
-      body: note.body,
-      loaded: true
-    });
-  };
-
-  render = () => {
-    return (
-      <Card>
-        <Card.Header>
-          <div className="font-weight-bold">{this.state.title}</div>
-        </Card.Header>
-        <Card.Body>
-          {this.state.body}
-        </Card.Body>
-      </Card>
-    );
-  };
+export default (props) => {
+  return (
+    <Card>
+      <Card.Header>
+        <div className="font-weight-bold">{props.title}</div>
+      </Card.Header>
+      <Card.Body>
+        {props.body}
+      </Card.Body>
+      <Card.Footer className="p-0">
+        <div className="text-right">
+          <Button
+            variant="light"
+            onClick={() => props.onEdit(props.id)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="light"
+            onClick={() => props.onDelete(props.id)}
+          >
+            Delete
+          </Button>
+        </div>
+      </Card.Footer>
+    </Card>
+  );
 };
