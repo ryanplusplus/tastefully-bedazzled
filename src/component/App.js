@@ -7,7 +7,7 @@ import CreateNote from './CreateNote';
 import Settings from './Settings';
 import FourOhFour from './FourOhFour';
 import Header from './Header';
-import NotePreviewGrid from './NotePreviewGrid';
+import NoteGrid from './NoteGrid';
 import Note from './Note';
 
 export default class extends Component {
@@ -64,7 +64,7 @@ export default class extends Component {
 
         <Container fluid="true">
           <Switch>
-            <Route exact path="/" component={() => <NotePreviewGrid model={this.model} notes={this.state.notes} onDelete={this.deleteNote} />} />
+            <Route exact path="/" component={() => <NoteGrid model={this.model} notes={this.state.notes} onDelete={this.deleteNote} />} />
             <Route path="/new" component={() => <CreateNote onSave={this.createNote} />} />
             <Route path="/settings" component={() => <Settings currentKey={this.state.key} keyError={this.state.keyError} onKeyUpdate={this.updateKey} />} />
             <Route path="/note/:id" component={() => <Note model={this.model} />} />

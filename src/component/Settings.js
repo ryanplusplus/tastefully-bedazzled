@@ -17,11 +17,7 @@ export default (props) => {
     <Col xs={12} md={3} lg={2}>
       <Form onSubmit={onKeyUpdate} >
         <Form.Group controlId="currentKeyLabel">
-          <Form.Label>Current key</Form.Label>
-        </Form.Group>
-
-        <Form.Group controlId="currentKey">
-          <Form.Label><code>{props.currentKey}</code></Form.Label>
+          <Form.Label>Current key<br /><span className="text-monospace">{props.currentKey}</span></Form.Label>
         </Form.Group>
 
         <Form.Group controlId="newKey">
