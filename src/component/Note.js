@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashAlt, faShareSquare } from '@fortawesome/free-solid-svg-icons'
+import { LinkContainer } from 'react-router-bootstrap';
 
 library.add(faEdit);
 library.add(faTrashAlt);
@@ -31,13 +32,14 @@ export default (props) => {
                   <FontAwesomeIcon style={{ color: "black" }} icon="share-square" />
                 </Button>
                 &nbsp;&nbsp;&nbsp;
-                <Button
-                  className="p-0"
-                  variant="link"
-                  onClick={() => props.onEdit(props.id)}
-                >
-                  <FontAwesomeIcon style={{ color: "black" }} icon="edit" />
-                </Button>
+                <LinkContainer to={`edit/${props.id}`}>
+                  <Button
+                    className="p-0"
+                    variant="link"
+                  >
+                    <FontAwesomeIcon style={{ color: "black" }} icon="edit" />
+                  </Button>
+                </LinkContainer>
                 &nbsp;&nbsp;&nbsp;
                 <Button
                 className="p-0"

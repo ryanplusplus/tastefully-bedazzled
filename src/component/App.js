@@ -3,12 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Model from '../notes/Model';
 import Api from '../notes/Api';
-import CreateNote from './CreateNote';
+import EditNote from './EditNote';
 import Settings from './Settings';
 import FourOhFour from './FourOhFour';
 import Header from './Header';
 import NoteGrid from './NoteGrid';
-import Note from './Note';
 
 export default class extends Component {
   constructor(props) {
@@ -47,6 +46,12 @@ export default class extends Component {
     this.props.history.push('/');
   };
 
+  editNote = async ({ id, title, body }) => {
+    await this.model.writeNote(id, { title, body });
+    await this.updateState();
+    this.props.history.push('/');
+  };
+
   deleteNote = async (id) => {
     await this.model.deleteNote(id);
     this.updateState();
@@ -72,9 +77,20 @@ export default class extends Component {
         <Container fluid="true">
           <Switch>
             <Route exact path="/" component={() => <NoteGrid model={this.model} notes={this.state.notes} onDelete={this.deleteNote} />} />
-            <Route path="/new" component={() => <CreateNote onSave={this.createNote} />} />
+            <Route path="/new" component={() => <EditNote onSave={this.createNote} />} />
             <Route path="/settings" component={() => <Settings currentKey={this.state.key} keyError={this.state.keyError} onKeyUpdate={this.updateKey} />} />
-            <Route path="/note/:id" component={() => <Note model={this.model} />} />
+            <Route path="/edit/:id" component={(props) => {
+              const id = props.match.params.id;
+              const note = this.model.readNote(id);
+
+              return (
+                <EditNote
+                  onSave={this.editNote}
+                  id={id}
+                  note={note}
+                />
+              );
+            }} />
             <Route component={FourOhFour} />
           </Switch>
         </Container>
