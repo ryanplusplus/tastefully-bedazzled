@@ -16,8 +16,15 @@ export default class extends Component {
 
     this.state = { loaded: false, ids: [] };
 
-    Model(Api()).then(async (model) => {
+    let key;
+    try {
+      key = document.cookie.match(/key=(\S+)/)[1];
+    }
+    catch(e) {}
+
+    Model(Api(), key).then(async (model) => {
       this.model = model;
+      document.cookie = `key=${model.key}; expires=Thu, 18 Dec " + ${new Date().getFullYear() + 10} + " 12:00:00 UTC`;
       this.updateState({ loaded: true });
     });
   };

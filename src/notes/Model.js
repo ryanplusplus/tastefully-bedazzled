@@ -3,9 +3,6 @@ export default async (api, key) => {
     key
   };
 
-  // fixme kill this
-  o.key = 'vowcs';
-
   if(o.key === undefined) {
     o.key = await api.create({
       tastefullyBedazzled: true,
