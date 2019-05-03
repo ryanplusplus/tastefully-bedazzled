@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+import Notifications, { notify } from 'react-notify-toast';
 import Model from '../notes/Model';
 import Api from '../notes/Api';
 import EditNote from './EditNote';
@@ -17,7 +18,7 @@ export default class extends Component {
 
     let key;
     try {
-      key = document.cookie.match(/key=(\S+)/)[1];
+      key = document.cookie.match(/key=([^\s;]+)/)[1];
     }
     catch(e) {}
 
@@ -52,9 +53,21 @@ export default class extends Component {
     this.props.history.push('/');
   };
 
+  addSharedNote = async (id) => {
+    await this.model.addNote(id);
+    await this.updateState();
+  };
+
   deleteNote = async (id) => {
     await this.model.deleteNote(id);
     this.updateState();
+  };
+
+  shareNote = async (id) => {
+    const urlComponents = window.location.href.split('/');
+    const url = `${urlComponents[0]}//${urlComponents[2]}`;
+    await navigator.clipboard.writeText(`${url}/share/${id}`);
+    notify.show('Share link copied to clipboard!');
   };
 
   updateKey = async (key) => {
@@ -72,13 +85,33 @@ export default class extends Component {
   render = () => {
     return (
       this.state.loaded && <Container fluid="true">
+        <Notifications />
+
         <Header />
 
         <Container fluid="true">
           <Switch>
-            <Route exact path="/" component={() => <NoteGrid model={this.model} notes={this.state.notes} onDelete={this.deleteNote} />} />
-            <Route path="/new" component={() => <EditNote onSave={this.createNote} />} />
-            <Route path="/settings" component={() => <Settings currentKey={this.state.key} keyError={this.state.keyError} onKeyUpdate={this.updateKey} />} />
+            <Route exact path="/" component={() =>
+              <NoteGrid
+                model={this.model}
+                notes={this.state.notes}
+                onDelete={this.deleteNote}
+                onShare={this.shareNote}
+              />}
+            />
+
+            <Route path="/new" component={() =>
+              <EditNote onSave={this.createNote} />}
+            />
+
+            <Route path="/settings" component={() =>
+              <Settings
+                currentKey={this.state.key}
+                keyError={this.state.keyError}
+                onKeyUpdate={this.updateKey}
+              />}
+            />
+
             <Route path="/edit/:id" component={(props) => {
               const id = props.match.params.id;
               const note = this.model.readNote(id);
@@ -91,6 +124,12 @@ export default class extends Component {
                 />
               );
             }} />
+
+            <Route path="/share/:id" render={(props) => {
+              this.addSharedNote(props.match.params.id);
+              return <Redirect to="/" />;
+            }} />
+
             <Route component={FourOhFour} />
           </Switch>
         </Container>

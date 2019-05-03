@@ -91,3 +91,16 @@ it('should allow the validity of a key to be checked', async () => {
   expect(await model.validKey(key)).toBe(true);
   expect(await model.validKey(key + 1)).toBe(false);
 });
+
+it('should allow an existing note to be added', async () => {
+  const api = Api();
+  let model = await Model(api);
+
+  const note1 = await model.createNote({ title: 'Note1', contents: 'Contents1' });
+  const note2 = await model.createNote({ title: 'Note2', contents: 'Contents2' });
+
+  model.deleteNote(note1);
+  model.addNote(note1);
+
+  expect(await model.listNotes()).toEqual([note2, note1]);
+});

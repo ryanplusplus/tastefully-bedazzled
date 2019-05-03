@@ -14,6 +14,7 @@ export default (props) => {
             title={data.title}
             body={data.body}
             onDelete={props.onDelete}
+            onShare={props.onShare}
           />
         );
       })}

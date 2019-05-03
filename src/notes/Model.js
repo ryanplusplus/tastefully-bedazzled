@@ -34,6 +34,14 @@ export default async (api, key) => {
     return await writeManifest(manifest);
   };
 
+  o.addNote = async (id) => {
+    const manifest = await readManifest();
+    if(!manifest.notes.some((x) => x === id)) {
+      manifest.notes.push(id);
+      await writeManifest(manifest);
+    }
+  };
+
   o.setKey = (key) => o.key = key;
 
   o.validKey = async (key) => {
