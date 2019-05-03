@@ -8,7 +8,7 @@ import EditNote from './EditNote';
 import Settings from './Settings';
 import FourOhFour from './FourOhFour';
 import Header from './Header';
-import NoteGrid from './NoteGrid';
+import Home from './Home';
 
 export default class extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ export default class extends Component {
         <Container fluid="true">
           <Switch>
             <Route exact path="/" component={() =>
-              <NoteGrid
+              <Home
                 model={this.model}
                 notes={this.state.notes}
                 onDelete={this.deleteNote}

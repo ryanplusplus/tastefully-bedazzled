@@ -8,7 +8,6 @@ export default (props) => {
       {props.notes.map(({ id, data }) => {
         return (
           <Note
-            model={props.model}
             id={id}
             key={id}
             title={data.title}
