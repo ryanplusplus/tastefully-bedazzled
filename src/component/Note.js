@@ -55,7 +55,7 @@ export default (props) => {
       </Card.Header>
 
       <Card.Body>
-        {props.body}
+        <pre>{props.body}</pre>
       </Card.Body>
     </Card>
   );
