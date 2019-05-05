@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 export default () => {
   return (
-    <Navbar expand="lg">
+    <Navbar>
       <Navbar.Collapse>
         <Nav className="mr-auto">
           <NavLink exact to="/" className="nav-link">Notes</NavLink>
